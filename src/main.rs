@@ -2,8 +2,10 @@ use std::env;
 use std::process::Command;
 
 const PATH_MAX_LENGTH: usize = 50;
+const DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
 
 const DIR_ICON: &str = "󰉖";
+const TIME_ICON: &str = "";
 const APPLE_ICON: &str = "";
 const LINUX_ICON: &str = "";
 
@@ -42,8 +44,16 @@ fn dir() -> String {
   }
 }
 
+fn date_time() -> String {
+  let output = Command::new("date").arg(DATE_TIME_FORMAT).output().expect("failed to execute process");
+
+  return format!("{} {}", TIME_ICON, String::from_utf8_lossy(&output.stdout).trim_end());
+}
+
 fn main() {
   let id_prompt: String = add_bg(id(), "magenta");
   let dir_prompt: String = add_bg(dir(), "blue");
-  print!("{}{}", id_prompt, dir_prompt)
+  let date_time_prompt: String = add_bg(date_time(), "white");
+
+  print!("{}{}\n{} ", id_prompt, dir_prompt, date_time_prompt)
 }
