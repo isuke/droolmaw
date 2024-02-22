@@ -3,6 +3,7 @@ use std::process::Command;
 
 const PATH_MAX_LENGTH: usize = 50;
 
+const DIR_ICON: &str = "󰉖";
 const APPLE_ICON: &str = "";
 const LINUX_ICON: &str = "";
 
@@ -35,9 +36,9 @@ fn dir() -> String {
       Some(str) => str,
       None => path_of_other_than_current_dir,
     };
-    return format!("{}.../{}", path_of_other_than_current_dir, current_dir);
+    return format!("{} {}.../{}", DIR_ICON, path_of_other_than_current_dir, current_dir);
   } else {
-    return format!("{}/{}", path_of_other_than_current_dir, current_dir);
+    return format!("{} {}/{}", DIR_ICON, path_of_other_than_current_dir, current_dir);
   }
 }
 
