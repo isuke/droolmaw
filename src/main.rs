@@ -1,14 +1,25 @@
+use std::env;
 use std::process::Command;
 
 const PATH_MAX_LENGTH: usize = 50;
+
+const APPLE_ICON: &str = "";
+const LINUX_ICON: &str = "";
 
 fn add_bg(string: String, color: &str) -> String {
   return format!("%K{{{}}} {} %k", color, string);
 }
 
 fn id() -> String {
+  let os_icon = match env::consts::OS {
+    "macos" => APPLE_ICON,
+    "linux" => LINUX_ICON,
+    _ => "",
+  };
+
   let output = Command::new("id").arg("-un").output().expect("failed to execute process");
-  return String::from(String::from_utf8_lossy(&output.stdout).trim_end());
+
+  return format!("{} {}", os_icon, String::from_utf8_lossy(&output.stdout).trim_end());
 }
 
 fn dir() -> String {
@@ -33,5 +44,5 @@ fn dir() -> String {
 fn main() {
   let id_prompt: String = add_bg(id(), "magenta");
   let dir_prompt: String = add_bg(dir(), "blue");
-  print!("{}{} ", id_prompt, dir_prompt)
+  print!("{}{}", id_prompt, dir_prompt)
 }
