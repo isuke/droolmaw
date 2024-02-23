@@ -2,6 +2,9 @@ use core::fmt;
 use std::env;
 use std::process::Command;
 
+const SEGMENT_L_SEPARATOR: &str = "";
+const _SEGMENT_R_SEPARATOR: &str = "";
+
 const PATH_MAX_LENGTH: usize = 50;
 const DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
 
@@ -10,8 +13,9 @@ const TIME_ICON: &str = "";
 const APPLE_ICON: &str = "";
 const LINUX_ICON: &str = "";
 
+#[derive(Debug, PartialEq)]
 enum Color {
-  _Nothing,
+  Nothing,
   _Black,
   Blue,
   _Cyan,
@@ -25,7 +29,7 @@ enum Color {
 impl fmt::Display for Color {
   fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
     match self {
-      Color::_Nothing => panic!("Color::_Nothing is can not convert to string."),
+      Color::Nothing => panic!("Color::Nothing is can not convert to string."),
       Color::_Black => write!(f, "black"),
       Color::Blue => write!(f, "blue"),
       Color::_Cyan => write!(f, "cyan"),
@@ -38,8 +42,42 @@ impl fmt::Display for Color {
   }
 }
 
-fn add_bg(string: String, color: Color) -> String {
-  return format!("%K{{{}}} {} %k", color, string);
+#[derive(Debug)]
+struct Segment {
+  string: String,
+  color: Color,
+}
+
+fn set_bg(string: &String, color: &Color) -> String {
+  return format!("%K{{{}}}{}%k", color, string);
+}
+
+fn set_fg(string: &String, color: &Color) -> String {
+  return format!("%F{{{}}}{}%f", color, string);
+}
+
+fn build_l_prompt(segments: Vec<Segment>) -> String {
+  let mut result = String::from("");
+
+  let mut index = 1;
+  let mut prev_color = &Color::Nothing;
+  for segment in &segments {
+    if *prev_color != Color::Nothing {
+      result = format!("{}{}", result, set_fg(&set_bg(&String::from(SEGMENT_L_SEPARATOR), &segment.color), prev_color))
+    }
+
+    let temp = format!(" {} ", segment.string);
+    result = format!("{}{}", result, set_bg(&temp, &segment.color));
+
+    if segments.len() <= index {
+      result = format!("{}{}", result, set_fg(&String::from(SEGMENT_L_SEPARATOR), &segment.color))
+    }
+
+    index += 1;
+    prev_color = &segment.color;
+  }
+
+  return result;
 }
 
 fn id() -> String {
@@ -80,9 +118,25 @@ fn date_time() -> String {
 }
 
 fn main() {
-  let id_prompt = add_bg(id(), Color::Magenta);
-  let dir_prompt = add_bg(dir(), Color::Blue);
-  let date_time_prompt = add_bg(date_time(), Color::White);
+  let mut prompt_first: Vec<Segment> = Vec::new();
+  let mut prompt_second: Vec<Segment> = Vec::new();
 
-  print!("{}{}\n{} ", id_prompt, dir_prompt, date_time_prompt)
+  prompt_first.push(Segment {
+    string: id(),
+    color: Color::Magenta,
+  });
+  prompt_first.push(Segment {
+    string: dir(),
+    color: Color::Blue,
+  });
+
+  prompt_second.push(Segment {
+    string: date_time(),
+    color: Color::White,
+  });
+
+  print!("{}", build_l_prompt(prompt_first));
+  print!("\n");
+  print!("{}", build_l_prompt(prompt_second));
+  print!(" ");
 }
