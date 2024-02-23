@@ -1,3 +1,4 @@
+use core::fmt;
 use std::env;
 use std::process::Command;
 
@@ -9,7 +10,35 @@ const TIME_ICON: &str = "";
 const APPLE_ICON: &str = "";
 const LINUX_ICON: &str = "";
 
-fn add_bg(string: String, color: &str) -> String {
+enum Color {
+  _Nothing,
+  _Black,
+  Blue,
+  _Cyan,
+  _Green,
+  Magenta,
+  _Red,
+  White,
+  _Yellow,
+}
+
+impl fmt::Display for Color {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    match self {
+      Color::_Nothing => panic!("Color::_Nothing is can not convert to string."),
+      Color::_Black => write!(f, "black"),
+      Color::Blue => write!(f, "blue"),
+      Color::_Cyan => write!(f, "cyan"),
+      Color::_Green => write!(f, "green"),
+      Color::Magenta => write!(f, "magenta"),
+      Color::_Red => write!(f, "red"),
+      Color::White => write!(f, "white"),
+      Color::_Yellow => write!(f, "yellow"),
+    }
+  }
+}
+
+fn add_bg(string: String, color: Color) -> String {
   return format!("%K{{{}}} {} %k", color, string);
 }
 
@@ -51,9 +80,9 @@ fn date_time() -> String {
 }
 
 fn main() {
-  let id_prompt: String = add_bg(id(), "magenta");
-  let dir_prompt: String = add_bg(dir(), "blue");
-  let date_time_prompt: String = add_bg(date_time(), "white");
+  let id_prompt = add_bg(id(), Color::Magenta);
+  let dir_prompt = add_bg(dir(), Color::Blue);
+  let date_time_prompt = add_bg(date_time(), Color::White);
 
   print!("{}{}\n{} ", id_prompt, dir_prompt, date_time_prompt)
 }
