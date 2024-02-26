@@ -9,6 +9,7 @@ const PATH_MAX_LENGTH: usize = 50;
 const DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
 
 const DIR_ICON: &str = "󰉖";
+const GIT_AUTHOR_ICON: &str = "󰏪";
 const TIME_ICON: &str = "";
 const APPLE_ICON: &str = "";
 const LINUX_ICON: &str = "";
@@ -23,7 +24,7 @@ enum Color {
   Magenta,
   _Red,
   White,
-  _Yellow,
+  Yellow,
 }
 
 impl fmt::Display for Color {
@@ -37,7 +38,7 @@ impl fmt::Display for Color {
       Color::Magenta => write!(f, "magenta"),
       Color::_Red => write!(f, "red"),
       Color::White => write!(f, "white"),
-      Color::_Yellow => write!(f, "yellow"),
+      Color::Yellow => write!(f, "yellow"),
     }
   }
 }
@@ -46,6 +47,13 @@ impl fmt::Display for Color {
 struct Segment {
   string: String,
   color: Color,
+}
+
+fn is_inside_git_work_tree() -> bool {
+  return match Command::new("git").args(["rev-parse", "--is-inside-work-tree"]).output() {
+    Ok(_) => true,
+    Err(_) => false,
+  };
 }
 
 fn set_bg(string: &String, color: &Color) -> String {
@@ -117,6 +125,15 @@ fn date_time() -> String {
   return format!("{} {}", TIME_ICON, String::from_utf8_lossy(&output.stdout).trim_end());
 }
 
+fn git_name() -> String {
+  let output = Command::new("git")
+    .args(["config", "--get", "user.name"])
+    .output()
+    .expect("failed to execute process");
+
+  return format!("{} {}", GIT_AUTHOR_ICON, String::from_utf8_lossy(&output.stdout).trim_end());
+}
+
 fn main() {
   let mut prompt_first: Vec<Segment> = Vec::new();
   let mut prompt_second: Vec<Segment> = Vec::new();
@@ -129,6 +146,12 @@ fn main() {
     string: dir(),
     color: Color::Blue,
   });
+  if is_inside_git_work_tree() {
+    prompt_first.push(Segment {
+      string: git_name(),
+      color: Color::Yellow,
+    });
+  }
 
   prompt_second.push(Segment {
     string: date_time(),
