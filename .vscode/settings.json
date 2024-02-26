@@ -1,5 +1,5 @@
 {
-  "cSpell.userWords": ["droolmaw", "consts"],
+  "cSpell.userWords": ["droolmaw", "consts", "zstyle"],
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer",
     "editor.formatOnSave": true

@@ -10,6 +10,7 @@ const DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
 
 const DIR_ICON: &str = "󰉖";
 const GIT_AUTHOR_ICON: &str = "󰏪";
+const GIT_BRANCH_ICON: &str = "󰘬";
 const TIME_ICON: &str = "";
 const APPLE_ICON: &str = "";
 const LINUX_ICON: &str = "";
@@ -20,7 +21,7 @@ enum Color {
   _Black,
   Blue,
   _Cyan,
-  _Green,
+  Green,
   Magenta,
   _Red,
   White,
@@ -34,7 +35,7 @@ impl fmt::Display for Color {
       Color::_Black => write!(f, "black"),
       Color::Blue => write!(f, "blue"),
       Color::_Cyan => write!(f, "cyan"),
-      Color::_Green => write!(f, "green"),
+      Color::Green => write!(f, "green"),
       Color::Magenta => write!(f, "magenta"),
       Color::_Red => write!(f, "red"),
       Color::White => write!(f, "white"),
@@ -134,6 +135,15 @@ fn git_name() -> String {
   return format!("{} {}", GIT_AUTHOR_ICON, String::from_utf8_lossy(&output.stdout).trim_end());
 }
 
+fn git_current_branch() -> String {
+  let output = Command::new("git")
+    .args(["branch", "--show-current"])
+    .output()
+    .expect("failed to execute process");
+
+  return format!("{} {}", GIT_BRANCH_ICON, String::from_utf8_lossy(&output.stdout).trim_end());
+}
+
 fn main() {
   let mut prompt_first: Vec<Segment> = Vec::new();
   let mut prompt_second: Vec<Segment> = Vec::new();
@@ -150,6 +160,10 @@ fn main() {
     prompt_first.push(Segment {
       string: git_name(),
       color: Color::Yellow,
+    });
+    prompt_first.push(Segment {
+      string: git_current_branch(),
+      color: Color::Green,
     });
   }
 
