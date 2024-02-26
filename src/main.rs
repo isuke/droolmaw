@@ -11,6 +11,7 @@ const DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
 const DIR_ICON: &str = "󰉖";
 const GIT_AUTHOR_ICON: &str = "󰏪";
 const GIT_BRANCH_ICON: &str = "󰘬";
+const GIT_STASH_ICON: &str = "󰠔";
 const TIME_ICON: &str = "";
 const APPLE_ICON: &str = "";
 const LINUX_ICON: &str = "";
@@ -144,6 +145,16 @@ fn git_current_branch() -> String {
   return format!("{} {}", GIT_BRANCH_ICON, String::from_utf8_lossy(&output.stdout).trim_end());
 }
 
+fn git_stash() -> String {
+  let output = Command::new("git").args(["reflog", "refs/stash"]).output().expect("failed to execute process");
+
+  return format!(
+    "{} stash +{}",
+    GIT_STASH_ICON,
+    (String::from_utf8_lossy(&output.stdout).trim_end().split("/").collect::<Vec<&str>>().len() - 1)
+  );
+}
+
 fn main() {
   let mut prompt_first: Vec<Segment> = Vec::new();
   let mut prompt_second: Vec<Segment> = Vec::new();
@@ -164,6 +175,10 @@ fn main() {
     prompt_first.push(Segment {
       string: git_current_branch(),
       color: Color::Green,
+    });
+    prompt_first.push(Segment {
+      string: git_stash(),
+      color: Color::White,
     });
   }
 
