@@ -11,6 +11,8 @@ const DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
 const DIR_ICON: &str = "󰉖";
 const GIT_AUTHOR_ICON: &str = "󰏪";
 const GIT_BRANCH_ICON: &str = "󰘬";
+const GIT_UNSTAGED_ICON: &str = "";
+const GIT_STAGED_ICON: &str = "";
 const GIT_STASH_ICON: &str = "󰠔";
 const TIME_ICON: &str = "";
 const APPLE_ICON: &str = "";
@@ -141,18 +143,47 @@ fn git_current_branch() -> String {
     .args(["branch", "--show-current"])
     .output()
     .expect("failed to execute process");
-
-  return format!("{} {}", GIT_BRANCH_ICON, String::from_utf8_lossy(&output.stdout).trim_end());
+  return String::from(String::from_utf8_lossy(&output.stdout).trim_end());
 }
 
-fn git_stash() -> String {
-  let output = Command::new("git").args(["reflog", "refs/stash"]).output().expect("failed to execute process");
+fn git_current_branch_and_statuses() -> String {
+  let unstaged_file_output = Command::new("git").args(["diff", "--name-only"]).output().expect("failed to execute process");
+  let unstaged_file_num = String::from(String::from_utf8_lossy(&unstaged_file_output.stdout))
+    .split("\n")
+    .filter(|str| *str != "")
+    .collect::<Vec<&str>>()
+    .len();
 
-  return format!(
-    "{} stash +{}",
-    GIT_STASH_ICON,
-    (String::from_utf8_lossy(&output.stdout).trim_end().split("/").collect::<Vec<&str>>().len() - 1)
-  );
+  let staged_file_output = Command::new("git")
+    .args(["diff", "--name-only", "--cached"])
+    .output()
+    .expect("failed to execute process");
+  let staged_file_num = String::from(String::from_utf8_lossy(&staged_file_output.stdout))
+    .split("\n")
+    .filter(|str| *str != "")
+    .collect::<Vec<&str>>()
+    .len();
+
+  let stash_output = Command::new("git").args(["reflog", "refs/stash"]).output().expect("failed to execute process");
+  let stash_file_num = String::from(String::from_utf8_lossy(&stash_output.stdout).trim_end())
+    .split("/")
+    .collect::<Vec<&str>>()
+    .len()
+    - 1;
+
+  let mut status = String::from("");
+
+  if 0 < unstaged_file_num {
+    status = format!("{} {} {}", status, GIT_UNSTAGED_ICON, unstaged_file_num);
+  }
+  if 0 < staged_file_num {
+    status = format!("{} {} {}", status, GIT_STAGED_ICON, staged_file_num);
+  }
+  if 0 < stash_file_num {
+    status = format!("{} {} {}", status, GIT_STASH_ICON, stash_file_num);
+  }
+
+  return format!("{} {}{}", GIT_BRANCH_ICON, git_current_branch(), status);
 }
 
 fn main() {
@@ -173,12 +204,8 @@ fn main() {
       color: Color::Yellow,
     });
     prompt_first.push(Segment {
-      string: git_current_branch(),
+      string: git_current_branch_and_statuses(),
       color: Color::Green,
-    });
-    prompt_first.push(Segment {
-      string: git_stash(),
-      color: Color::White,
     });
   }
 
