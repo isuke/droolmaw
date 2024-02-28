@@ -186,6 +186,66 @@ fn git_current_branch_and_statuses() -> String {
   return format!("{} {}{}", GIT_BRANCH_ICON, git_current_branch(), status);
 }
 
+fn git_remotes() -> Vec<String> {
+  let output = Command::new("git").arg("remote").output().expect("failed to execute process");
+  return String::from(String::from_utf8_lossy(&output.stdout))
+    .split("\n")
+    .map(|str| String::from(str))
+    .filter(|str| *str != "")
+    .collect::<Vec<String>>();
+}
+
+fn git_remotes_and_statuses() -> String {
+  let current_branch = git_current_branch();
+  let remotes = git_remotes();
+
+  let mut result = String::from("");
+  for remote in &remotes {
+    let remote_path = match Command::new("git")
+      .args(["rev-parse", "--verify", "--symbolic-full-name", &format!("remotes/{}/{}", remote, current_branch)])
+      .output()
+    {
+      Ok(remote_path_output) => String::from(String::from_utf8_lossy(&remote_path_output.stdout).trim_end()),
+      Err(_) => String::from(""),
+    };
+
+    let status: String = if remote_path != "" {
+      let ahead_output = Command::new("git")
+        .args(["rev-list", &format!("{}..HEAD", remote_path)])
+        .output()
+        .expect("failed to execute process");
+      let ahead_num = format!("{}", String::from_utf8_lossy(&ahead_output.stdout))
+        .split("\n")
+        .filter(|str| *str != "")
+        .collect::<Vec<&str>>()
+        .len();
+
+      let behind_output = Command::new("git")
+        .args(["rev-list", &format!("HEAD..{}", remote_path)])
+        .output()
+        .expect("failed to execute process");
+      let behind_num = format!("{}", String::from_utf8_lossy(&behind_output.stdout))
+        .split("\n")
+        .filter(|str| *str != "")
+        .collect::<Vec<&str>>()
+        .len();
+
+      if ahead_num == 0 && behind_num == 0 {
+        String::from("")
+      } else {
+        format!("+{} -{}", ahead_num, behind_num)
+      }
+    } else {
+      String::from("")
+    };
+
+    // NOTE: add a space to end for nerd icon.
+    result = format!("{}{} {} ", result, remote, status)
+  }
+
+  return result;
+}
+
 fn main() {
   let mut prompt_first: Vec<Segment> = Vec::new();
   let mut prompt_second: Vec<Segment> = Vec::new();
@@ -206,6 +266,10 @@ fn main() {
     prompt_first.push(Segment {
       string: git_current_branch_and_statuses(),
       color: Color::Green,
+    });
+    prompt_first.push(Segment {
+      string: git_remotes_and_statuses(),
+      color: Color::White,
     });
   }
 
