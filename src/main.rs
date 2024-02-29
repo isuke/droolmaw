@@ -1,6 +1,9 @@
-use core::fmt;
+mod color;
+
 use std::env;
 use std::process::Command;
+
+use color::Color;
 
 const SEGMENT_L_SEPARATOR: &str = "";
 const _SEGMENT_R_SEPARATOR: &str = "";
@@ -17,35 +20,6 @@ const GIT_STASH_ICON: &str = "󰠔";
 const TIME_ICON: &str = "";
 const APPLE_ICON: &str = "";
 const LINUX_ICON: &str = "";
-
-#[derive(Debug, PartialEq)]
-enum Color {
-  Nothing,
-  _Black,
-  Blue,
-  _Cyan,
-  Green,
-  Magenta,
-  _Red,
-  White,
-  Yellow,
-}
-
-impl fmt::Display for Color {
-  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    match self {
-      Color::Nothing => panic!("Color::Nothing is can not convert to string."),
-      Color::_Black => write!(f, "black"),
-      Color::Blue => write!(f, "blue"),
-      Color::_Cyan => write!(f, "cyan"),
-      Color::Green => write!(f, "green"),
-      Color::Magenta => write!(f, "magenta"),
-      Color::_Red => write!(f, "red"),
-      Color::White => write!(f, "white"),
-      Color::Yellow => write!(f, "yellow"),
-    }
-  }
-}
 
 #[derive(Debug)]
 struct Segment {
