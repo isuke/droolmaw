@@ -8,3 +8,18 @@ The following fonts are recommended for Japanese.
 
 - [白源 (はくげん／HackGen)](https://github.com/yuru7/HackGen)
 - [PlemolJP](https://github.com/yuru7/PlemolJP)
+
+## How to Install
+
+### By [zinit](https://github.com/zdharma-continuum/zinit)
+
+```sh
+zinit ice from"gh-r" as"program"
+zinit load "isuke/droolmaw"
+
+prompt_precmd() {
+  PROMPT=`droolmaw`
+  RPROMPT=`droolmaw --right`
+}
+add-zsh-hook precmd prompt_precmd
+```
