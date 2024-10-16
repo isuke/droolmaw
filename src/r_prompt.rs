@@ -7,6 +7,7 @@ use crate::segment::Color;
 use crate::segment::Segment;
 
 const SEPARATOR: &str = "";
+const LANGS: [&str; 2] = ["ruby", "node"];
 
 pub fn run() {
   let mut prompt: Vec<Segment> = Vec::new();
@@ -15,7 +16,7 @@ pub fn run() {
     string: dir_path(),
     color: Color::Magenta,
   });
-  if is_using_mise() {
+  if LANGS.len() > 0 && is_using_mise() {
     prompt.push(Segment {
       string: langs(),
       color: Color::Blue,
@@ -53,7 +54,20 @@ fn is_using_mise() -> bool {
 }
 
 fn langs() -> String {
-  return format!("TODO");
+  let mut result = String::from("");
+
+  for lang in LANGS {
+    let output = Command::new("mise")
+      .args(["ls", "--current", "--no-header", lang])
+      .output()
+      .expect("failed to execute process");
+
+    let version: String = String::from(String::from_utf8_lossy(&output.stdout).trim_end().split_whitespace().collect::<Vec<&str>>()[1]);
+
+    result = format!("{} {} {}", result, lang, version);
+  }
+
+  return result;
 }
 
 fn dir_path() -> String {
