@@ -9,7 +9,6 @@ use crate::segment::Segment;
 
 const SEPARATOR: &str = "";
 
-const PATH_MAX_LENGTH: usize = 50;
 const DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
 
 const DIR_ICON: &str = "󰉖";
@@ -105,21 +104,16 @@ fn id() -> String {
 
 fn dir() -> String {
   let output = Command::new("pwd").output().expect("failed to execute process");
-  let stdout = String::from(String::from_utf8_lossy(&output.stdout).trim_end());
+  let stdout = String::from(
+    *String::from_utf8_lossy(&output.stdout)
+      .trim_end()
+      .split("/")
+      .collect::<Vec<&str>>()
+      .last()
+      .unwrap(),
+  );
 
-  let collection: Vec<&str> = stdout.split("/").collect();
-  let current_dir = String::from(*collection.last().unwrap());
-  let path_of_other_than_current_dir = &collection[..collection.len()].join("/");
-
-  if path_of_other_than_current_dir.len() > PATH_MAX_LENGTH {
-    let path_of_other_than_current_dir = match path_of_other_than_current_dir.get(..PATH_MAX_LENGTH.min(path_of_other_than_current_dir.len())) {
-      Some(str) => str,
-      None => path_of_other_than_current_dir,
-    };
-    return format!("{} {}.../{}", DIR_ICON, path_of_other_than_current_dir, current_dir);
-  } else {
-    return format!("{} {}/{}", DIR_ICON, path_of_other_than_current_dir, current_dir);
-  }
+  return format!("{} {}", DIR_ICON, stdout);
 }
 
 fn date_time() -> String {
