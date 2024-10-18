@@ -10,7 +10,7 @@ fn main() {
 
   match args[args.len() - 1].as_str() {
     "--right" => r_prompt::run(),
-    "--setting-gui" => setting_gui::run().expect("failed to execute process"),
+    "--setting-gui" => setting_gui::run(),
     _ => l_prompt::run(),
   }
 }
