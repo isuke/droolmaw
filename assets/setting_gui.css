@@ -1,0 +1,142 @@
+@font-face {
+  font-family: "HackNerdFontMono";
+  src: url(./HackNerdFontMono-Regular.ttf);
+}
+
+:root {
+  --unit: 16px;
+  --ft-size-xl: calc(var(--unit) * 2);
+  --ft-size-l: calc(var(--unit) * 1.25);
+  --ft-size-m: calc(var(--unit) * 0.75);
+  --ft-size-s: calc(var(--unit) * 0.63);
+  --space-size-xxl: calc(var(--unit) * 3.25);
+  --space-size-xl: calc(var(--unit) * 2);
+  --space-size-l: calc(var(--unit) * 1.25);
+  --space-size-m: calc(var(--unit) * 0.75);
+  --space-size-s: calc(var(--unit) * 0.5);
+
+  --default-font-family: hiraginosans, "hiragino kaku gothic pron", meiryo,
+    arial, sans-serif;
+  --nerd-font-family: "HackNerdFontMono";
+
+  --global-background-color: #ffffff;
+  --component-background-color: #a3fa00;
+
+  width: 100vw;
+  height: 100vh;
+  font-size: var(--unit);
+}
+
+body {
+  width: 100%;
+  min-height: 100%;
+  font-family: var(--default-font-family);
+  font-size: var(--ft-size-m);
+  padding: var(--space-size-l);
+  background-color: var(--global-background-color);
+}
+
+.main {
+  > .title {
+    font-size: var(--ft-size-xl);
+  }
+
+  > .description {
+    margin-top: var(--space-size-m);
+    font-size: var(--ft-size-m);
+  }
+
+  > .separator_select {
+    width: 100%;
+    position: relative;
+
+    > .description {
+      /* none */
+    }
+
+    > .current_select {
+      width: 100%;
+      max-width: 360px;
+      display: inline-flex;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    > .options {
+      width: 100%;
+      max-width: 360px;
+      margin-top: var(--space-size-m);
+      border: 1px #9d9d9d solid;
+      padding: var(--space-size-m) 0;
+      position: absolute;
+      background-color: var(--global-background-color);
+
+      > .option {
+        width: 100%;
+        display: inline-flex;
+        justify-content: space-between;
+        cursor: pointer;
+
+        &:not(:first-child) {
+          margin-top: var(--space-size-m);
+        }
+      }
+    }
+  }
+}
+
+.components_list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-size-m);
+  margin-top: var(--space-size-m);
+  padding: var(--space-size-m);
+  font-size: var(--ft-size-m);
+  border: 1px #9d9d9d solid;
+
+  > .component {
+    /* none */
+  }
+}
+
+.LComponent {
+  font-family: var(--nerd-font-family);
+  text-align: center;
+  white-space: nowrap;
+
+  > .before_separator {
+    background-color: var(--component-background-color);
+    color: var(--global-background-color);
+  }
+
+  > .text {
+    background-color: var(--component-background-color);
+  }
+
+  > .after_separator {
+    background-color: var(--global-background-color);
+    color: var(--component-background-color);
+  }
+}
+
+.RComponent {
+  font-family: var(--nerd-font-family);
+  text-align: center;
+  white-space: nowrap;
+
+  > .before_separator {
+    background-color: var(--global-background-color);
+    color: var(--component-background-color);
+  }
+
+  > .text {
+    background-color: var(--component-background-color);
+  }
+
+  > .after_separator {
+    background-color: var(--component-background-color);
+    color: var(--global-background-color);
+  }
+}
