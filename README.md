@@ -18,7 +18,7 @@ zinit ice from"gh-r" as"program"
 zinit load "isuke/droolmaw"
 
 prompt_precmd() {
-  PROMPT=`droolmaw`
+  PROMPT=`droolmaw --left`
   RPROMPT=`droolmaw --right`
 }
 add-zsh-hook precmd prompt_precmd

@@ -1,6 +1,6 @@
 use core::fmt;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Color {
   Nothing,
   _Black,
