@@ -17,6 +17,7 @@ struct Component<'a> {
 
 #[derive(Debug, Clone, Copy)]
 struct Segment<'a> {
+  id: i32,
   component: Component<'a>,
   color: Color,
 }
@@ -96,28 +97,36 @@ fn setting_gui() -> Element {
   let mut is_active_separator_select = use_signal(|| false);
 
   let mut current_l1_segments = use_signal(|| Vec::<Segment>::new());
-  current_l1_segments.push(Segment {
-    component: component_list[0],
-    color: Color::Magenta,
-  });
-  current_l1_segments.push(Segment {
-    component: component_list[1],
-    color: Color::Blue,
-  });
-  current_l1_segments.push(Segment {
-    component: component_list[2],
-    color: Color::Yellow,
-  });
+  // let current_l1_segments_lock = current_l1_segments.read();
+  // current_l1_segments.write().push(Segment {
+  //   id: 1,
+  //   component: component_list[0],
+  //   color: Color::Magenta,
+  // });
+  // current_l1_segments.push(Segment {
+  //   id: 2,
+  //   component: component_list[1],
+  //   color: Color::Blue,
+  // });
+  // current_l1_segments.push(Segment {
+  //   id: 3,
+  //   component: component_list[3],
+  //   color: Color::Yellow,
+  // });
 
   let mut current_r_segments = use_signal(|| Vec::<Segment>::new());
-  current_r_segments.push(Segment {
-    component: component_list[2],
-    color: Color::Magenta,
-  });
-  current_r_segments.push(Segment {
-    component: component_list[6],
-    color: Color::Blue,
-  });
+  // current_r_segments.push(Segment {
+  //   id: 1,
+  //   component: component_list[2],
+  //   color: Color::Magenta,
+  // });
+  // current_r_segments.push(Segment {
+  //   id: 2,
+  //   component: component_list[6],
+  //   color: Color::Blue,
+  // });
+
+  let mut next_l_id: Signal<i32> = use_signal(|| 1);
 
   rsx! {
     link { rel: "stylesheet", href: "destyle.css" }
@@ -164,6 +173,7 @@ fn setting_gui() -> Element {
             for segment in current_l1_segments.iter() {
               li {
                 class: "segment",
+                key: "{segment.id}",
                 LComponent { separator: (*current_separator)().l, string: segment.component.sample, color: segment.color },
                 button {
                   class: "edit_button",
@@ -171,6 +181,11 @@ fn setting_gui() -> Element {
                 }
                 button {
                   class: "remove_button",
+                  onclick: move |_| {
+                    // if let Some(remove_position) = current_l1_segments.iter().position( |current_l1_segment| current_l1_segment.id == segment.id ) {
+                    //   current_l1_segments.remove(remove_position);
+                    // }
+                  },
                   "Remove"
                 }
               }
@@ -179,6 +194,10 @@ fn setting_gui() -> Element {
               class: "add",
               button {
                 class: "add_button",
+                onclick: move |_| {
+                  current_l1_segments.write().push(Segment { id: next_l_id(), component: component_list[0].clone(), color: Color::Magenta});
+                  next_l_id += 1;
+                },
                 "Add"
               }
             }
