@@ -51,3 +51,33 @@ prompt_precmd() {
 }
 add-zsh-hook precmd prompt_precmd
 ```
+
+## Setting File Spec
+
+### key: name
+
+| value                           | option           | description              |
+| ------------------------------- | ---------------- | ------------------------ |
+| id                              |                  | [TODO]                   |
+| dir                             |                  | current directory name   |
+| dir_path                        | max_length = 123 | current directory path   |
+| date_time                       |                  | date time                |
+| git_name                        |                  | git author name          |
+| git_current_branch              |                  | git current branch       |
+| git_current_branch_and_statuses |                  | [TODO]                   |
+| git_remotes                     |                  | git remote name          |
+| git_remotes_and_statuses        |                  | [TODO]                   |
+| langs                           | langs = ["ruby", "node", "rust", "python"] | |
+
+### key: color
+
+| value     |
+| --------- |
+|  Black    |
+|  Blue     |
+|  Cyan     |
+|  Green    |
+|  Magenta  |
+|  Red      |
+|  White    |
+|  Yellow   |
