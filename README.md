@@ -11,7 +11,35 @@ The following fonts are recommended for Japanese.
 
 ## How to Install
 
-### By [zinit](https://github.com/zdharma-continuum/zinit)
+### 1. Prepare Setting File
+
+Put the following file in your home directory as '.droolmaw.toml'.
+
+```toml
+l_separator = ""
+r_separator = ""
+
+[[l_components_first]]
+name = "id"
+color = "Magenta"
+
+[[l_components_first]]
+name = "dir_path"
+color = "Blue"
+
+[[l_components_second]]
+name = "date_time"
+color = "White"
+
+[[r_components]]
+name = "langs"
+color = "Blue"
+langs = ["rust"]
+```
+
+### 2. Download and Set
+
+#### By [zinit](https://github.com/zdharma-continuum/zinit)
 
 ```sh
 zinit ice from"gh-r" as"program"
