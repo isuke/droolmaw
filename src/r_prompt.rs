@@ -9,6 +9,8 @@ fn build(separator: &str, segments: Vec<Segment>) -> String {
 
   let mut prev_color = &Color::Nothing;
   for segment in &segments {
+    let font_color = get_font_color(&segment.color);
+
     if *prev_color == Color::Nothing {
       result = format!("{}{}", result, set_fg(&String::from(separator), &segment.color));
     } else {
@@ -16,7 +18,7 @@ fn build(separator: &str, segments: Vec<Segment>) -> String {
     }
 
     let temp = format!(" {} ", segment.string);
-    result = format!("{}{}", result, set_bg(&temp, &segment.color));
+    result = format!("{}{}", result, set_fg(&set_bg(&temp, &segment.color), &font_color));
 
     prev_color = &segment.color;
   }

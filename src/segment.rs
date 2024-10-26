@@ -144,6 +144,20 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
   return segments;
 }
 
+pub fn get_font_color(background_color: &Color) -> Color {
+  match background_color {
+    Color::Nothing => panic!("Color::Nothing has no corresponding color."),
+    Color::Black => Color::White,
+    Color::Blue => Color::White,
+    Color::Cyan => Color::Black,
+    Color::Green => Color::Black,
+    Color::Magenta => Color::White,
+    Color::Red => Color::White,
+    Color::White => Color::Black,
+    Color::Yellow => Color::Black,
+  }
+}
+
 pub fn set_bg(string: &String, color: &Color) -> String {
   return format!("%K{{{}}}{}%k", color, string);
 }
