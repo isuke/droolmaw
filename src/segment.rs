@@ -97,14 +97,6 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           })
         }
       }
-      "git_current_branch" => {
-        if is_inside_git_work_tree() {
-          segments.push(Segment {
-            string: git_current_branch(),
-            color: component.color,
-          })
-        }
-      }
       "git_current_branch_and_statuses" => {
         if is_inside_git_work_tree() {
           segments.push(Segment {
@@ -219,14 +211,6 @@ pub fn git_name() -> String {
   return format!("{} {}", GIT_AUTHOR_ICON, String::from_utf8_lossy(&output.stdout).trim_end());
 }
 
-pub fn git_current_branch() -> String {
-  let output = Command::new("git")
-    .args(["branch", "--show-current"])
-    .output()
-    .expect("failed to execute process");
-  return String::from(String::from_utf8_lossy(&output.stdout).trim_end());
-}
-
 pub fn git_current_branch_and_statuses() -> String {
   let unstaged_file_output = Command::new("git").args(["diff", "--name-only"]).output().expect("failed to execute process");
   let unstaged_file_num = String::from(String::from_utf8_lossy(&unstaged_file_output.stdout))
@@ -265,15 +249,6 @@ pub fn git_current_branch_and_statuses() -> String {
   }
 
   return format!("{} {}{}", GIT_BRANCH_ICON, git_current_branch(), status);
-}
-
-pub fn git_remotes() -> Vec<String> {
-  let output = Command::new("git").arg("remote").output().expect("failed to execute process");
-  return String::from(String::from_utf8_lossy(&output.stdout))
-    .split("\n")
-    .map(|str| String::from(str))
-    .filter(|str| *str != "")
-    .collect::<Vec<String>>();
 }
 
 pub fn git_remotes_and_statuses() -> String {
@@ -349,4 +324,21 @@ pub fn is_using_mise() -> bool {
     Ok(_) => true,
     Err(_) => false,
   };
+}
+
+fn git_current_branch() -> String {
+  let output = Command::new("git")
+    .args(["branch", "--show-current"])
+    .output()
+    .expect("failed to execute process");
+  return String::from(String::from_utf8_lossy(&output.stdout).trim_end());
+}
+
+fn git_remotes() -> Vec<String> {
+  let output = Command::new("git").arg("remote").output().expect("failed to execute process");
+  return String::from(String::from_utf8_lossy(&output.stdout))
+    .split("\n")
+    .map(|str| String::from(str))
+    .filter(|str| *str != "")
+    .collect::<Vec<String>>();
 }
