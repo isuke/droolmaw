@@ -74,6 +74,27 @@ add-zsh-hook precmd prompt_precmd
 
 ## Setting File Spec
 
+### key: l_separator and r_separator
+
+- hard_divider
+    - l_separator: `""` (U+E0B0)
+    - r_separator: `""` (U+E0B2)
+- triangle1
+    - l_separator: `""` (U+E0B8)
+    - r_separator: `""` (U+E0BE)
+- triangle2
+    - l_separator: `""` (U+E0BC)
+    - r_separator: `""` (U+E0BA)
+- half_circle_thick
+    - l_separator: `""` (U+E0B4)
+    - r_separator: `""` (U+E0B6)
+- flame_thick
+    - l_separator: `""` (U+E0C0)
+    - r_separator: `""` (U+E0C2)
+- ice_waveform
+    - l_separator: `""` (U+E0C8)
+    - r_separator: `""` (U+E0CA)
+
 ### key: name
 
 | value                           | option           | description              |
