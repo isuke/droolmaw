@@ -39,11 +39,26 @@ langs = ["rust"]
 
 ### 2. Download and Set
 
-#### By [zinit](https://github.com/zdharma-continuum/zinit)
+#### A. By [zinit](https://github.com/zdharma-continuum/zinit)
 
 ```sh
 zinit ice from"gh-r" as"program"
 zinit load "isuke/droolmaw"
+
+prompt_precmd() {
+  PROMPT=`droolmaw`
+  RPROMPT=`droolmaw --right`
+}
+add-zsh-hook precmd prompt_precmd
+```
+
+#### B. Compile Yourself
+
+```sh
+git clone https://github.com/isuke/droolmaw.git
+cd droolmaw
+cargo build --release
+export PATH="$PATH:/your/path/target/release/droolmaw"
 
 prompt_precmd() {
   PROMPT=`droolmaw`
@@ -58,13 +73,13 @@ add-zsh-hook precmd prompt_precmd
 
 | value                           | option           | description              |
 | ------------------------------- | ---------------- | ------------------------ |
-| id                              |                  | [TODO]                   |
+| id                              |                  | id                       |
 | dir                             |                  | current directory name   |
 | dir_path                        | max_length = 123 | current directory path   |
 | date_time                       |                  | date time                |
 | git_name                        |                  | git author name          |
-| git_current_branch_and_statuses |                  | [TODO]                   |
-| git_remotes_and_statuses        |                  | [TODO]                   |
+| git_current_branch_and_statuses |                  | git current branch name and statuses |
+| git_remotes_and_statuses        |                  | git remote name and statues          |
 | langs                           | langs = ["ruby", "node", "rust", "python"] | |
 
 ### key: color
