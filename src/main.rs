@@ -12,6 +12,8 @@ mod l_prompt;
 mod r_prompt;
 mod segment;
 
+const VERSION: &str = env!("CARGO_PKG_VERSION");
+
 fn main() {
   let path = match dirs::home_dir() {
     Some(path_buf) => format!("{}/.droolmaw.toml", path_buf.display()),
@@ -27,10 +29,10 @@ fn main() {
     Ok(content) => {
       let args: Vec<String> = env::args().collect();
 
-      if args[args.len() - 1] == "--right" {
-        r_prompt::run(content.r_separator.as_str(), content.r_components)
-      } else {
-        l_prompt::run(content.l_separator.as_str(), content.l_components_first, content.l_components_second)
+      match args[args.len() - 1].as_str() {
+        "--right" => r_prompt::run(content.r_separator.as_str(), content.r_components),
+        "--version" => println!("{}", VERSION),
+        _ => l_prompt::run(content.l_separator.as_str(), content.l_components_first, content.l_components_second),
       }
     }
     Err(e) => panic!("fail to parse toml: {}", e),
