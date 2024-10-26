@@ -113,6 +113,14 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           })
         }
       }
+      "git_stash" => {
+        if is_inside_git_work_tree() {
+          segments.push(Segment {
+            string: git_stash(),
+            color: component.color,
+          })
+        }
+      }
       "langs" => match component.langs {
         None => panic!("can not find lang parameter."),
         Some(l) => {
@@ -229,13 +237,6 @@ pub fn git_current_branch_and_statuses() -> String {
     .collect::<Vec<&str>>()
     .len();
 
-  let stash_output = Command::new("git").args(["reflog", "refs/stash"]).output().expect("failed to execute process");
-  let stash_file_num = String::from(String::from_utf8_lossy(&stash_output.stdout).trim_end())
-    .split("/")
-    .collect::<Vec<&str>>()
-    .len()
-    - 1;
-
   let mut status = String::from("");
 
   if 0 < unstaged_file_num {
@@ -243,9 +244,6 @@ pub fn git_current_branch_and_statuses() -> String {
   }
   if 0 < staged_file_num {
     status = format!("{} {} {}", status, GIT_STAGED_ICON, staged_file_num);
-  }
-  if 0 < stash_file_num {
-    status = format!("{} {} {}", status, GIT_STASH_ICON, stash_file_num);
   }
 
   return format!("{} {}{}", GIT_BRANCH_ICON, git_current_branch(), status);
@@ -300,6 +298,17 @@ pub fn git_remotes_and_statuses() -> String {
   }
 
   return result;
+}
+
+pub fn git_stash() -> String {
+  let stash_output = Command::new("git").args(["reflog", "refs/stash"]).output().expect("failed to execute process");
+  let stash_file_num = String::from(String::from_utf8_lossy(&stash_output.stdout).trim_end())
+    .split("/")
+    .collect::<Vec<&str>>()
+    .len()
+    - 1;
+
+  return format!("{} {}", GIT_STASH_ICON, stash_file_num);
 }
 
 pub fn langs(langs: Vec<&str>) -> String {
