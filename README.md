@@ -51,18 +51,19 @@ zinit load "isuke/droolmaw"
 
 prompt_precmd() {
   PROMPT=`droolmaw`
+  PROMPT2=`droolmaw --2`
   RPROMPT=`droolmaw --right`
 }
 add-zsh-hook precmd prompt_precmd
 ```
 
-#### B. Compile Yourself
+#### B. Compile by Yourself
 
 ```sh
 git clone https://github.com/isuke/droolmaw.git
 cd droolmaw
 cargo build --release
-export PATH="$PATH:/your/path/target/release/droolmaw"
+export PATH="$PATH:/your/path/droolmaw/target/release"
 
 prompt_precmd() {
   PROMPT=`droolmaw`
@@ -72,7 +73,7 @@ prompt_precmd() {
 add-zsh-hook precmd prompt_precmd
 ```
 
-## Setting File Spec
+## Spec of Setting File
 
 ### key: l_separator and r_separator
 
