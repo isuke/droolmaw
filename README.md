@@ -20,23 +20,23 @@ l_separator = ""
 r_separator = ""
 
 [[l_components_first]]
-name = "id"
+name = "Id"
 color = "Magenta"
 
 [[l_components_first]]
-name = "dir_path"
+name = "DirPath"
 color = "Blue"
 
 [[l_components_second]]
-name = "date_time"
+name = "DateTime"
 color = "White"
 
 [[l_components2]]
-name = "none"
+name = "None"
 color = "White"
 
 [[r_components]]
-name = "langs"
+name = "Langs"
 color = "Blue"
 langs = ["rust"]
 ```
@@ -102,16 +102,16 @@ add-zsh-hook precmd prompt_precmd
 
 | value                           | option           | description              |
 | ------------------------------- | ---------------- | ------------------------ |
-| none                            |                  | none                     |
-| id                              |                  | id (user name)           |
-| dir                             |                  | current directory name   |
-| dir_path                        | max_length = 123 | current directory path   |
-| date_time                       |                  | date time                |
-| git_name                        |                  | git author name          |
-| git_current_branch_and_statuses |                  | git current branch name and statuses |
-| git_remotes_and_statuses        |                  | git remote name and statues          |
-| langs                           | langs = ["ruby", "node", "rust", "python"] | The version of the language managed by [mise](https://github.com/jdx/mise) in the current directory |
-| result_text                     | ok_text = "ok" ng_text = "ng" | if prev command exit code is 0 => print ok_text else => print ng_text |
+| None                            |                  | none                     |
+| Id                              |                  | id (user name)           |
+| Dir                             |                  | current directory name   |
+| DirPath                         | max_length = 123 | current directory path   |
+| DateTime                        |                  | date time                |
+| GitName                         |                  | git author name          |
+| GitCurrentBranchAndStatuses     |                  | git current branch name and statuses |
+| GitRemotesAndStatuses           |                  | git remote name and statues          |
+| Langs                           | langs = ["ruby", "node", "rust", "python"] | The version of the language managed by [mise](https://github.com/jdx/mise) in the current directory |
+| ResultText                      | ok_text = "ok" ng_text = "ng" | if prev command exit code is 0 => print ok_text else => print ng_text |
 
 ### key: color
 

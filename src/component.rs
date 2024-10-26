@@ -64,27 +64,27 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
 
   for component in components {
     match component.name.as_str() {
-      "none" => segments.push(Segment {
+      "None" => segments.push(Segment {
         string: String::new(),
         color: component.color,
       }),
-      "id" => segments.push(Segment {
+      "Id" => segments.push(Segment {
         string: id(),
         color: component.color,
       }),
-      "dir" => segments.push(Segment {
+      "Dir" => segments.push(Segment {
         string: dir(),
         color: component.color,
       }),
-      "dir_path" => segments.push(Segment {
+      "DirPath" => segments.push(Segment {
         string: dir_path(component.max_length),
         color: component.color,
       }),
-      "date_time" => segments.push(Segment {
+      "DateTime" => segments.push(Segment {
         string: date_time(),
         color: component.color,
       }),
-      "git_name" => {
+      "GitName" => {
         if is_inside_git_work_tree() {
           segments.push(Segment {
             string: git_name(),
@@ -92,7 +92,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           })
         }
       }
-      "git_current_branch_and_statuses" => {
+      "GitCurrentBranchAndStatuses" => {
         if is_inside_git_work_tree() {
           segments.push(Segment {
             string: git_current_branch_and_statuses(),
@@ -100,7 +100,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           })
         }
       }
-      "git_remotes_and_statuses" => {
+      "GitRemotesAndStatuses" => {
         if is_inside_git_work_tree() {
           segments.push(Segment {
             string: git_remotes_and_statuses(),
@@ -108,7 +108,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           })
         }
       }
-      "git_stash" => {
+      "GitStash" => {
         if is_inside_git_work_tree() {
           segments.push(Segment {
             string: git_stash(),
@@ -116,7 +116,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           })
         }
       }
-      "langs" => match component.langs {
+      "Langs" => match component.langs {
         None => panic!("can not find lang parameter."),
         Some(l) => {
           if is_using_mise() {
@@ -127,7 +127,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           }
         }
       },
-      "result_text" => segments.push(Segment {
+      "ResultText" => segments.push(Segment {
         string: result_text(component.ok_text, component.ng_text),
         color: component.color,
       }),
