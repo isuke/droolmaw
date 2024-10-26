@@ -152,13 +152,6 @@ pub fn set_fg(string: &String, color: &Color) -> String {
   return format!("%F{{{}}}{}%f", color, string);
 }
 
-pub fn is_inside_git_work_tree() -> bool {
-  return match Command::new("git").args(["rev-parse", "--is-inside-work-tree"]).output() {
-    Ok(_) => true,
-    Err(_) => false,
-  };
-}
-
 pub fn id() -> String {
   let os_icon = match env::consts::OS {
     "macos" => APPLE_ICON,
@@ -333,7 +326,14 @@ pub fn langs(langs: Vec<&str>) -> String {
   return result;
 }
 
-pub fn is_using_mise() -> bool {
+fn is_inside_git_work_tree() -> bool {
+  return match Command::new("git").args(["rev-parse", "--is-inside-work-tree"]).output() {
+    Ok(result) => String::from(String::from_utf8_lossy(&result.stdout)).trim_end() == "true",
+    Err(_) => false,
+  };
+}
+
+fn is_using_mise() -> bool {
   return match Command::new("mise").arg("--version").output() {
     Ok(_) => true,
     Err(_) => false,
