@@ -73,14 +73,14 @@ add-zsh-hook precmd prompt_precmd
 
 | value                           | option           | description              |
 | ------------------------------- | ---------------- | ------------------------ |
-| id                              |                  | id                       |
+| id                              |                  | id (user name)           |
 | dir                             |                  | current directory name   |
 | dir_path                        | max_length = 123 | current directory path   |
 | date_time                       |                  | date time                |
 | git_name                        |                  | git author name          |
 | git_current_branch_and_statuses |                  | git current branch name and statuses |
 | git_remotes_and_statuses        |                  | git remote name and statues          |
-| langs                           | langs = ["ruby", "node", "rust", "python"] | |
+| langs                           | langs = ["ruby", "node", "rust", "python"] | The version of the language managed by [mise](https://github.com/jdx/mise) in the current directory |
 
 ### key: color
 
