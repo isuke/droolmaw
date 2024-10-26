@@ -1,4 +1,4 @@
-use crate::segment::*;
+use crate::component::*;
 
 pub fn run(separator: &str, components_first: Vec<Component>, components_second: Vec<Component>) {
   print!("{}", build(separator, create_segments(components_first)));

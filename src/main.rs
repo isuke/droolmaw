@@ -6,12 +6,13 @@ use std::env;
 use std::fs::File;
 use std::io::Read;
 
-use crate::segment::Droolmaw;
+use crate::component::Droolmaw;
 
+mod chip;
+mod component;
 mod l_prompt;
 mod l_prompt2;
 mod r_prompt;
-mod segment;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 

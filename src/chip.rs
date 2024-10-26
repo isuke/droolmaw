@@ -1,8 +1,6 @@
 use std::env;
 use std::process::Command;
 
-use core::fmt;
-
 const DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
 const DEFAULT_PATH_MAX_LENGTH: usize = 50;
 
@@ -15,156 +13,6 @@ const GIT_STASH_ICON: &str = "󰠔";
 const TIME_ICON: &str = "";
 const APPLE_ICON: &str = "";
 const LINUX_ICON: &str = "";
-
-#[derive(Debug, PartialEq, Deserialize)]
-pub enum Color {
-  Nothing,
-  Black,
-  Blue,
-  Cyan,
-  Green,
-  Magenta,
-  Red,
-  White,
-  Yellow,
-}
-
-impl fmt::Display for Color {
-  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    match self {
-      Color::Nothing => panic!("Color::Nothing is can not convert to string."),
-      Color::Black => write!(f, "black"),
-      Color::Blue => write!(f, "blue"),
-      Color::Cyan => write!(f, "cyan"),
-      Color::Green => write!(f, "green"),
-      Color::Magenta => write!(f, "magenta"),
-      Color::Red => write!(f, "red"),
-      Color::White => write!(f, "white"),
-      Color::Yellow => write!(f, "yellow"),
-    }
-  }
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Droolmaw {
-  pub l_separator: String,
-  pub r_separator: String,
-  pub l_components_first: Vec<Component>,
-  pub l_components_second: Vec<Component>,
-  pub l_components2: Vec<Component>,
-  pub r_components: Vec<Component>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Component {
-  pub name: String,
-  pub color: Color,
-  pub langs: Option<Vec<String>>,
-  pub max_length: Option<usize>,
-}
-
-#[derive(Debug)]
-pub struct Segment {
-  pub string: String,
-  pub color: Color,
-}
-
-pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
-  let mut segments: Vec<Segment> = Vec::new();
-
-  for component in components {
-    match component.name.as_str() {
-      "none" => segments.push(Segment {
-        string: String::new(),
-        color: component.color,
-      }),
-      "id" => segments.push(Segment {
-        string: id(),
-        color: component.color,
-      }),
-      "dir" => segments.push(Segment {
-        string: dir(),
-        color: component.color,
-      }),
-      "dir_path" => segments.push(Segment {
-        string: dir_path(component.max_length),
-        color: component.color,
-      }),
-      "date_time" => segments.push(Segment {
-        string: date_time(),
-        color: component.color,
-      }),
-      "git_name" => {
-        if is_inside_git_work_tree() {
-          segments.push(Segment {
-            string: git_name(),
-            color: component.color,
-          })
-        }
-      }
-      "git_current_branch_and_statuses" => {
-        if is_inside_git_work_tree() {
-          segments.push(Segment {
-            string: git_current_branch_and_statuses(),
-            color: component.color,
-          })
-        }
-      }
-      "git_remotes_and_statuses" => {
-        if is_inside_git_work_tree() {
-          segments.push(Segment {
-            string: git_remotes_and_statuses(),
-            color: component.color,
-          })
-        }
-      }
-      "git_stash" => {
-        if is_inside_git_work_tree() {
-          segments.push(Segment {
-            string: git_stash(),
-            color: component.color,
-          })
-        }
-      }
-      "langs" => match component.langs {
-        None => panic!("can not find lang parameter."),
-        Some(l) => {
-          if is_using_mise() {
-            segments.push(Segment {
-              string: langs(l.iter().map(String::as_str).collect()),
-              color: component.color,
-            })
-          }
-        }
-      },
-      _ => panic!("can not find name '{}'.", component.name),
-    }
-  }
-
-  return segments;
-}
-
-pub fn get_font_color(background_color: &Color) -> Color {
-  match background_color {
-    Color::Nothing => panic!("Color::Nothing has no corresponding color."),
-    Color::Black => Color::White,
-    Color::Blue => Color::White,
-    Color::Cyan => Color::Black,
-    Color::Green => Color::Black,
-    Color::Magenta => Color::White,
-    Color::Red => Color::White,
-    Color::White => Color::Black,
-    Color::Yellow => Color::Black,
-  }
-}
-
-pub fn set_bg(string: &String, color: &Color) -> String {
-  return format!("%K{{{}}}{}%k", color, string);
-}
-
-pub fn set_fg(string: &String, color: &Color) -> String {
-  return format!("%F{{{}}}{}%f", color, string);
-}
 
 pub fn id() -> String {
   let os_icon = match env::consts::OS {
@@ -338,20 +186,6 @@ pub fn langs(langs: Vec<&str>) -> String {
   }
 
   return result;
-}
-
-fn is_inside_git_work_tree() -> bool {
-  return match Command::new("git").args(["rev-parse", "--is-inside-work-tree"]).output() {
-    Ok(result) => String::from(String::from_utf8_lossy(&result.stdout)).trim_end() == "true",
-    Err(_) => false,
-  };
-}
-
-fn is_using_mise() -> bool {
-  return match Command::new("mise").arg("--version").output() {
-    Ok(_) => true,
-    Err(_) => false,
-  };
 }
 
 fn git_current_branch() -> String {
