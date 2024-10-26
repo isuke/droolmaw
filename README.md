@@ -50,6 +50,7 @@ zinit ice from"gh-r" as"program"
 zinit load "isuke/droolmaw"
 
 prompt_precmd() {
+  export DROOLMAW_RETVAL=$?
   PROMPT=`droolmaw`
   PROMPT2=`droolmaw --2`
   RPROMPT=`droolmaw --right`
@@ -66,6 +67,7 @@ cargo build --release
 export PATH="$PATH:/your/path/droolmaw/target/release"
 
 prompt_precmd() {
+  export DROOLMAW_RETVAL=$?
   PROMPT=`droolmaw`
   PROMPT2=`droolmaw --2`
   RPROMPT=`droolmaw --right`
@@ -109,6 +111,7 @@ add-zsh-hook precmd prompt_precmd
 | git_current_branch_and_statuses |                  | git current branch name and statuses |
 | git_remotes_and_statuses        |                  | git remote name and statues          |
 | langs                           | langs = ["ruby", "node", "rust", "python"] | The version of the language managed by [mise](https://github.com/jdx/mise) in the current directory |
+| result_text                     | ok_text = "ok" ng_text = "ng" | if prev command exit code is 0 => print ok_text else => print ng_text |
 
 ### key: color
 

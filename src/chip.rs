@@ -188,6 +188,23 @@ pub fn langs(langs: Vec<&str>) -> String {
   return result;
 }
 
+pub fn result_text(ok_text: Option<String>, ng_text: Option<String>) -> String {
+  let ok_text = match ok_text {
+    Some(val) => val,
+    None => String::new(),
+  };
+  let ng_text = match ng_text {
+    Some(val) => val,
+    None => String::new(),
+  };
+
+  if String::from(env::var("DROOLMAW_RETVAL").unwrap()) == "0" {
+    return ok_text;
+  } else {
+    return ng_text;
+  }
+}
+
 fn git_current_branch() -> String {
   let output = Command::new("git")
     .args(["branch", "--show-current"])

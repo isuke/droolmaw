@@ -49,6 +49,8 @@ pub struct Component {
   pub color: Color,
   pub langs: Option<Vec<String>>,
   pub max_length: Option<usize>,
+  pub ok_text: Option<String>,
+  pub ng_text: Option<String>,
 }
 
 #[derive(Debug)]
@@ -125,6 +127,10 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           }
         }
       },
+      "result_text" => segments.push(Segment {
+        string: result_text(component.ok_text, component.ng_text),
+        color: component.color,
+      }),
       _ => panic!("can not find name '{}'.", component.name),
     }
   }
