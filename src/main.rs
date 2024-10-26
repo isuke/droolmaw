@@ -9,6 +9,7 @@ use std::io::Read;
 use crate::segment::Droolmaw;
 
 mod l_prompt;
+mod l_prompt2;
 mod r_prompt;
 mod segment;
 
@@ -30,6 +31,7 @@ fn main() {
       let args: Vec<String> = env::args().collect();
 
       match args[args.len() - 1].as_str() {
+        "--2" => l_prompt2::run(content.l_separator.as_str(), content.l_components2),
         "--right" => r_prompt::run(content.r_separator.as_str(), content.r_components),
         "--version" => println!("{}", VERSION),
         _ => l_prompt::run(content.l_separator.as_str(), content.l_components_first, content.l_components_second),

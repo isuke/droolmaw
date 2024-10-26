@@ -51,6 +51,7 @@ pub struct Droolmaw {
   pub r_separator: String,
   pub l_components_first: Vec<Component>,
   pub l_components_second: Vec<Component>,
+  pub l_components2: Vec<Component>,
   pub r_components: Vec<Component>,
 }
 
@@ -73,6 +74,10 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
 
   for component in components {
     match component.name.as_str() {
+      "none" => segments.push(Segment {
+        string: String::new(),
+        color: component.color,
+      }),
       "id" => segments.push(Segment {
         string: id(),
         color: component.color,

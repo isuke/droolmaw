@@ -31,6 +31,10 @@ color = "Blue"
 name = "date_time"
 color = "White"
 
+[[l_components2]]
+name = "none"
+color = "White"
+
 [[r_components]]
 name = "langs"
 color = "Blue"
@@ -62,6 +66,7 @@ export PATH="$PATH:/your/path/target/release/droolmaw"
 
 prompt_precmd() {
   PROMPT=`droolmaw`
+  PROMPT2=`droolmaw --2`
   RPROMPT=`droolmaw --right`
 }
 add-zsh-hook precmd prompt_precmd
@@ -73,6 +78,7 @@ add-zsh-hook precmd prompt_precmd
 
 | value                           | option           | description              |
 | ------------------------------- | ---------------- | ------------------------ |
+| none                            |                  | none                     |
 | id                              |                  | id (user name)           |
 | dir                             |                  | current directory name   |
 | dir_path                        | max_length = 123 | current directory path   |
@@ -86,11 +92,11 @@ add-zsh-hook precmd prompt_precmd
 
 | value     |
 | --------- |
-|  Black    |
-|  Blue     |
-|  Cyan     |
-|  Green    |
-|  Magenta  |
-|  Red      |
-|  White    |
-|  Yellow   |
+| Black     |
+| Blue      |
+| Cyan      |
+| Green     |
+| Magenta   |
+| Red       |
+| White     |
+| Yellow    |

@@ -1,8 +1,5 @@
 use crate::segment::*;
 
-use crate::segment::Color;
-use crate::segment::Segment;
-
 pub fn run(separator: &str, components: Vec<Component>) {
   print!("{}", build(separator, create_segments(components)));
 }

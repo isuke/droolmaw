@@ -1,10 +1,7 @@
 use crate::segment::*;
 
-pub fn run(separator: &str, components_first: Vec<Component>, components_second: Vec<Component>) {
-  print!("{}", build(separator, create_segments(components_first)));
-  print!("\n");
-  print!("{}", build(separator, create_segments(components_second)));
-  print!(" ");
+pub fn run(separator: &str, components: Vec<Component>) {
+  print!("{}", build(separator, create_segments(components)));
 }
 
 fn build(separator: &str, segments: Vec<Segment>) -> String {
