@@ -40,7 +40,7 @@ pub struct Droolmaw {
   pub l_components_first: Vec<Component>,
   pub l_components_second: Vec<Component>,
   pub l_components2: Vec<Component>,
-  pub r_components: Vec<Component>,
+  pub r_components: Option<Vec<Component>>,
 }
 
 #[derive(Debug, Deserialize)]
