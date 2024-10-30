@@ -1,5 +1,7 @@
 # Droolmaw [![git-consistent friendly](https://img.shields.io/badge/git--consistent-friendly-brightgreen.svg)](https://github.com/isuke/git-consistent)  [![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)](https://raw.githubusercontent.com/isuke/droolmaw/main/LICENSE)
 
+![](https://raw.githubusercontent.com/isuke/droolmaw/images/image01.png)
+
 **Droolmaw** is zsh theme.
 
 You need [Nerd Fonts](https://www.nerdfonts.com/).
