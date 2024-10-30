@@ -32,6 +32,7 @@ color = "Blue"
 [[l_components_second]]
 name = "DateTime"
 color = "White"
+ng_color = "Red"
 
 [[l_components2]]
 name = "None"
@@ -100,7 +101,7 @@ add-zsh-hook precmd prompt_precmd
     - l_separator: `""` (U+E0C8)
     - r_separator: `""` (U+E0CA)
 
-### key: name
+### key: `name`
 
 | value                           | option           | description              |
 | ------------------------------- | ---------------- | ------------------------ |
@@ -113,9 +114,9 @@ add-zsh-hook precmd prompt_precmd
 | GitCurrentBranchAndStatuses     |                  | git current branch name and statuses |
 | GitRemotesAndStatuses           |                  | git remote name and statues          |
 | Langs                           | langs = ["ruby", "node", "rust", "python"] | The version of the language managed by [mise](https://github.com/jdx/mise) in the current directory |
-| ResultText                      | ok_text = "ok" ng_text = "ng" | if prev command exit code is 0 => print ok_text else => print ng_text |
+| ResultText                      | ok_text = "ok" ng_text = "ng" | if prev command's exit code is 0 => print ok_text else => print ng_text |
 
-### key: color
+### key: `color` and `ng_color`
 
 | value     |
 | --------- |
@@ -127,3 +128,6 @@ add-zsh-hook precmd prompt_precmd
 | Red       |
 | White     |
 | Yellow    |
+
+The `color` is background color.
+Background color is the `ng_color` instead of the `color` if prev command's exit code is not 0.

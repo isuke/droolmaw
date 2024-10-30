@@ -4,7 +4,7 @@ use core::fmt;
 
 use crate::chip::*;
 
-#[derive(Debug, PartialEq, Deserialize)]
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
 pub enum Color {
   Nothing,
   Black,
@@ -47,6 +47,7 @@ pub struct Droolmaw {
 pub struct Component {
   pub name: String,
   pub color: Color,
+  pub ng_color: Option<Color>,
   pub langs: Option<Vec<String>>,
   pub max_length: Option<usize>,
   pub ok_text: Option<String>,
@@ -57,6 +58,7 @@ pub struct Component {
 pub struct Segment {
   pub string: String,
   pub color: Color,
+  pub ng_color: Option<Color>,
 }
 
 pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
@@ -67,28 +69,34 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
       "None" => segments.push(Segment {
         string: String::new(),
         color: component.color,
+        ng_color: component.ng_color,
       }),
       "Id" => segments.push(Segment {
         string: id(),
         color: component.color,
+        ng_color: component.ng_color,
       }),
       "Dir" => segments.push(Segment {
         string: dir(),
         color: component.color,
+        ng_color: component.ng_color,
       }),
       "DirPath" => segments.push(Segment {
         string: dir_path(component.max_length),
         color: component.color,
+        ng_color: component.ng_color,
       }),
       "DateTime" => segments.push(Segment {
         string: date_time(),
         color: component.color,
+        ng_color: component.ng_color,
       }),
       "GitName" => {
         if is_inside_git_work_tree() {
           segments.push(Segment {
             string: git_name(),
             color: component.color,
+            ng_color: component.ng_color,
           })
         }
       }
@@ -97,6 +105,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           segments.push(Segment {
             string: git_current_branch_and_statuses(),
             color: component.color,
+            ng_color: component.ng_color,
           })
         }
       }
@@ -105,6 +114,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           segments.push(Segment {
             string: git_remotes_and_statuses(),
             color: component.color,
+            ng_color: component.ng_color,
           })
         }
       }
@@ -113,6 +123,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
           segments.push(Segment {
             string: git_stash(),
             color: component.color,
+            ng_color: component.ng_color,
           })
         }
       }
@@ -123,6 +134,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
             segments.push(Segment {
               string: langs(l.iter().map(String::as_str).collect()),
               color: component.color,
+              ng_color: component.ng_color,
             })
           }
         }
@@ -130,6 +142,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
       "ResultText" => segments.push(Segment {
         string: result_text(component.ok_text, component.ng_text),
         color: component.color,
+        ng_color: component.ng_color,
       }),
       _ => panic!("can not find name '{}'.", component.name),
     }
