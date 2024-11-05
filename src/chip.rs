@@ -1,7 +1,7 @@
 use std::env;
 use std::process::Command;
 
-const DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
+const DEFAULT_DATE_TIME_FORMAT: &str = "+%m/%d %H:%M:%S";
 const DEFAULT_PATH_MAX_LENGTH: usize = 50;
 
 const DIR_ICON: &str = "󰉖";
@@ -49,8 +49,8 @@ pub fn dir_path(max_length: Option<usize>) -> String {
   let path_of_other_than_current_dir = &collection[..collection.len()].join("/");
 
   let max_length = match max_length {
+    Some(val) => val,
     None => DEFAULT_PATH_MAX_LENGTH,
-    Some(ml) => ml,
   };
 
   if path_of_other_than_current_dir.len() > max_length {
@@ -64,8 +64,13 @@ pub fn dir_path(max_length: Option<usize>) -> String {
   }
 }
 
-pub fn date_time() -> String {
-  let output = Command::new("date").arg(DATE_TIME_FORMAT).output().expect("failed to execute process");
+pub fn date_time(format: Option<String>) -> String {
+  let format = match format {
+    Some(val) => val,
+    None => DEFAULT_DATE_TIME_FORMAT.to_string(),
+  };
+
+  let output = Command::new("date").arg(format).output().expect("failed to execute process");
 
   return format!("{} {}", TIME_ICON, String::from_utf8_lossy(&output.stdout).trim_end());
 }

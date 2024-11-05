@@ -108,8 +108,8 @@ add-zsh-hook precmd prompt_precmd
 | None                            |                  | none                     |
 | Id                              |                  | id (user name)           |
 | Dir                             |                  | current directory name   |
-| DirPath                         | max_length = 123 | current directory path   |
-| DateTime                        |                  | date time                |
+| DirPath                         | max_length (default: `50`)                      | current directory path   |
+| DateTime                        | date_time_format (default: `"+%m/%d %H:%M:%S"`) | date time                |
 | GitName                         |                  | git author name          |
 | GitCurrentBranchAndStatuses     |                  | git current branch name and statuses |
 | GitRemotesAndStatuses           |                  | git remote name and statues          |

@@ -50,6 +50,7 @@ pub struct Component {
   pub ng_color: Option<Color>,
   pub langs: Option<Vec<String>>,
   pub max_length: Option<usize>,
+  pub date_time_format: Option<String>,
   pub ok_text: Option<String>,
   pub ng_text: Option<String>,
 }
@@ -87,7 +88,7 @@ pub fn create_segments(components: Vec<Component>) -> Vec<Segment> {
         ng_color: component.ng_color,
       }),
       "DateTime" => segments.push(Segment {
-        string: date_time(),
+        string: date_time(component.date_time_format),
         color: component.color,
         ng_color: component.ng_color,
       }),
