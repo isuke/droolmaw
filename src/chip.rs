@@ -46,7 +46,7 @@ pub fn dir_path(max_length: Option<usize>) -> String {
 
   let collection: Vec<&str> = stdout.split("/").collect();
   let current_dir = String::from(*collection.last().unwrap());
-  let path_of_other_than_current_dir = &collection[..collection.len()].join("/");
+  let path_of_other_than_current_dir = &collection[..(collection.len() - 1)].join("/");
 
   let max_length = match max_length {
     Some(val) => val,
