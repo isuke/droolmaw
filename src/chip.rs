@@ -166,12 +166,8 @@ pub fn git_remotes_and_statuses() -> String {
 }
 
 pub fn git_stash() -> String {
-  let stash_output = Command::new("git").args(["reflog", "refs/stash"]).output().expect("failed to execute process");
-  let stash_file_num = String::from(String::from_utf8_lossy(&stash_output.stdout).trim_end())
-    .split("/")
-    .collect::<Vec<&str>>()
-    .len()
-    - 1;
+  let stash_output = Command::new("git").args(["stash", "list"]).output().expect("failed to execute process");
+  let stash_file_num = String::from(String::from_utf8_lossy(&stash_output.stdout).trim_end()).len() - 1;
 
   return format!("{} {}", GIT_STASH_ICON, stash_file_num);
 }
